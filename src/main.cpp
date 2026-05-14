@@ -1,12 +1,15 @@
 #define LOVYANGFX_CONFIG_HPP_
+
+// ===== LovyanGFX Config for Waveshare ESP32-S3-Touch-LCD-2.8 =====
 #define LGFX_USE_V1
+#define LGFX_BOARD 0  // Let LovyanGFX autodetect
 
 #include <Arduino.h>
 #include <LovyanGFX.hpp>
 #include "display.h"
 
-// Create display instance - use the default display object from LovyanGFX
-static lgfx::LGFX_Device* pDisplay = nullptr;
+// Declare display instance
+static LGFX display;
 
 // Demo values that cycle through different states
 struct DemoData {
@@ -31,9 +34,6 @@ void setup() {
   
   Serial.println("Initializing display...");
   
-  // Get the default display instance from LovyanGFX
-  auto& display = M5.Lcd;  // or use: lgfx::LGFX_Device& display = *lgfx::LGFX_INSTANCE;
-  
   // Initialize display
   display.init();
   display.setRotation(1);
@@ -42,7 +42,7 @@ void setup() {
   Serial.println("Display initialized");
   Serial.printf("Display size: %d x %d\n", display.width(), display.height());
   
-  // Create race display instance
+  // Create race display instance with pointer to display
   raceDisplay = new RacecarDisplay(&display);
   raceDisplay->init();
   
