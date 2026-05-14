@@ -1,29 +1,32 @@
+#define LOVYANGFX_CONFIG_HPP_
+#define LGFX_USE_V1
+
 #include "display.h"
 
-RacecarDisplay::RacecarDisplay(LGFX* disp) : display(disp) {}
+RacecarDisplay::RacecarDisplay(lgfx::LGFX_Device* disp) : display(disp) {}
 
 void RacecarDisplay::init() {
-  display->setTextColor(COLOR_TEXT, TFT_BLACK);
+  display->setTextColor(TFT_WHITE, TFT_BLACK);
   display->fillScreen(TFT_BLACK);
 }
 
 uint32_t RacecarDisplay::getTemperatureColor(uint8_t current, uint8_t coldThresh, uint8_t hotThresh) {
   if (current < coldThresh) {
-    return COLOR_COLD;  // Blue - too cold
+    return COLOR_COLD;
   } else if (current > hotThresh) {
-    return COLOR_HOT;   // Red - too hot
+    return COLOR_HOT;
   } else {
-    return COLOR_GOOD;  // Green - perfect range
+    return COLOR_GOOD;
   }
 }
 
 uint32_t RacecarDisplay::getPressureColor(uint8_t current) {
   if (current < OIL_PRESSURE_LOW) {
-    return COLOR_HOT;   // Red - too low
+    return COLOR_HOT;
   } else if (current > OIL_PRESSURE_HIGH) {
-    return COLOR_HOT;   // Red - too high
+    return COLOR_HOT;
   } else {
-    return COLOR_GOOD;  // Green - safe range
+    return COLOR_GOOD;
   }
 }
 
@@ -37,7 +40,7 @@ void RacecarDisplay::drawBox(int16_t x, int16_t y, int16_t w, int16_t h, uint32_
   display->setFont(&fonts::Font2);
   display->setTextSize(1);
   display->setCursor(x + 5, y + 5);
-  display->setTextColor(COLOR_TEXT, TFT_BLACK);
+  display->setTextColor(TFT_WHITE, TFT_BLACK);
   display->print(label);
   
   // Draw value (larger text)
@@ -51,7 +54,7 @@ void RacecarDisplay::drawBox(int16_t x, int16_t y, int16_t w, int16_t h, uint32_
   display->setFont(&fonts::Font2);
   display->setTextSize(1);
   display->setCursor(x + 5, y + 50);
-  display->setTextColor(COLOR_TEXT, TFT_BLACK);
+  display->setTextColor(TFT_WHITE, TFT_BLACK);
   display->print(unit);
 }
 
@@ -65,7 +68,7 @@ void RacecarDisplay::updateDisplay(uint16_t rpm, uint8_t gear, uint16_t speed,
   // RPM - small at top center
   display->setFont(&fonts::Font4);
   display->setTextSize(1);
-  display->setTextColor(COLOR_TEXT, TFT_BLACK);
+  display->setTextColor(TFT_WHITE, TFT_BLACK);
   display->setCursor(200, 10);
   snprintf(buffer, sizeof(buffer), "RPM: %d", rpm);
   display->print(buffer);
@@ -73,7 +76,7 @@ void RacecarDisplay::updateDisplay(uint16_t rpm, uint8_t gear, uint16_t speed,
   // GEAR - LARGE in center
   display->setFont(&fonts::Font7);
   display->setTextSize(3);
-  display->setTextColor(COLOR_TEXT, TFT_BLACK);
+  display->setTextColor(TFT_WHITE, TFT_BLACK);
   char gearChar[2];
   if (gear == 0) {
     snprintf(gearChar, sizeof(gearChar), "N");
@@ -82,7 +85,7 @@ void RacecarDisplay::updateDisplay(uint16_t rpm, uint8_t gear, uint16_t speed,
   }
   
   // Center the gear display
-  int16_t gearX = 200;  // Approximate center for 480 width
+  int16_t gearX = 200;
   int16_t gearY = 180;
   display->setCursor(gearX, gearY);
   display->print(gearChar);
@@ -90,13 +93,12 @@ void RacecarDisplay::updateDisplay(uint16_t rpm, uint8_t gear, uint16_t speed,
   // SPEED - small below gear
   display->setFont(&fonts::Font4);
   display->setTextSize(1);
-  display->setTextColor(COLOR_TEXT, TFT_BLACK);
+  display->setTextColor(TFT_WHITE, TFT_BLACK);
   display->setCursor(200, 350);
   snprintf(buffer, sizeof(buffer), "SPD: %d", speed);
   display->print(buffer);
   
   // Temperature/Pressure boxes at bottom
-  // Get colors for each sensor
   uint32_t oilTempColor = getTemperatureColor(oilTemp, OIL_TEMP_COLD, OIL_TEMP_HOT);
   uint32_t waterTempColor = getTemperatureColor(waterTemp, WATER_TEMP_COLD, WATER_TEMP_HOT);
   uint32_t pressureColor = getPressureColor(oilPressure);
