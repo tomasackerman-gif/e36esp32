@@ -1,3 +1,6 @@
+#define LOVYANGFX_CONFIG_HPP_
+#define LGFX_USE_V1
+
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
@@ -5,7 +8,7 @@
 
 class RacecarDisplay {
 private:
-  LGFX* display;
+  lgfx::LGFX_Device* display;
   
   // Temperature thresholds (in Celsius)
   static constexpr uint8_t OIL_TEMP_COLD = 80;
@@ -18,16 +21,16 @@ private:
   static constexpr uint8_t OIL_PRESSURE_HIGH = 4;
   
   // Colors
-  static constexpr uint32_t COLOR_COLD = 0x00FFFF;   // Cyan/Blue
-  static constexpr uint32_t COLOR_GOOD = 0x00FF00;   // Green
-  static constexpr uint32_t COLOR_HOT = 0xFF0000;    // Red
-  static constexpr uint32_t COLOR_TEXT = 0xFFFFFF;   // White
+  static constexpr uint32_t COLOR_COLD = 0x00FFFF;
+  static constexpr uint32_t COLOR_GOOD = 0x00FF00;
+  static constexpr uint32_t COLOR_HOT = 0xFF0000;
+  static constexpr uint32_t COLOR_TEXT = 0xFFFFFF;
   
   uint32_t getTemperatureColor(uint8_t current, uint8_t coldThresh, uint8_t hotThresh);
   uint32_t getPressureColor(uint8_t current);
   
 public:
-  RacecarDisplay(LGFX* disp);
+  RacecarDisplay(lgfx::LGFX_Device* disp);
   void init();
   void updateDisplay(uint16_t rpm, uint8_t gear, uint16_t speed, 
                      uint8_t oilTemp, uint8_t waterTemp, uint8_t oilPressure);
