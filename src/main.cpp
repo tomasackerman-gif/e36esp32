@@ -5,9 +5,8 @@
 #include <LovyanGFX.hpp>
 #include "display.h"
 
-// Create display instance
-static LGFX display;
-static RacecarDisplay* raceDisplay = nullptr;
+// Create display instance - use the default display object from LovyanGFX
+static lgfx::LGFX_Device* pDisplay = nullptr;
 
 // Demo values that cycle through different states
 struct DemoData {
@@ -21,6 +20,7 @@ struct DemoData {
 };
 
 DemoData demo;
+RacecarDisplay* raceDisplay = nullptr;
 
 // Forward declaration
 void updateDemoValues();
@@ -31,7 +31,10 @@ void setup() {
   
   Serial.println("Initializing display...");
   
-  // Initialize display with LovyanGFX
+  // Get the default display instance from LovyanGFX
+  auto& display = M5.Lcd;  // or use: lgfx::LGFX_Device& display = *lgfx::LGFX_INSTANCE;
+  
+  // Initialize display
   display.init();
   display.setRotation(1);
   display.fillScreen(TFT_BLACK);
